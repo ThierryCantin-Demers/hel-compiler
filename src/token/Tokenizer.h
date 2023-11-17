@@ -13,7 +13,7 @@
 class Tokenizer
 {
 public:
-    explicit Tokenizer(const std::string& data_);
+    explicit Tokenizer(std::string data_);
 
     std::vector<Token> tokenize();
 

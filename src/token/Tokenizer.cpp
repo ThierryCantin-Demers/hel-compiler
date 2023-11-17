@@ -5,11 +5,11 @@
 #include "Tokenizer.h"
 #include <iostream>
 #include <sstream>
+#include <utility>
 
 
-Tokenizer::Tokenizer(const std::string& data_)
+Tokenizer::Tokenizer(std::string data_) : m_data(std::move(data_))
 {
-    m_data = data_;
     m_currentIndex = 0;
 }
 
@@ -45,7 +45,7 @@ std::vector<Token> Tokenizer::tokenize()
 
             std::string out = buffer.str();
 
-            if(out == "kill")
+            if (out == "kill")
             {
                 tokens.emplace_back(TokenType::kill);
             }
