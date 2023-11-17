@@ -6,7 +6,12 @@ set(CMAKE_CXX_STANDARD 23)
 add_executable(${PROJECT_NAME} src/main.cpp
         src/token/Token.h
         src/token/Tokenizer.h
-        src/token/Tokenizer.cpp)
+        src/token/Tokenizer.cpp
+        src/parsing/Parser.cpp
+        src/parsing/Parser.h
+        src/parsing/Node.h
+        src/generation/Generator.cpp
+        src/generation/Generator.h)
 
 target_include_directories(${PROJECT_NAME} PRIVATE src)
 
