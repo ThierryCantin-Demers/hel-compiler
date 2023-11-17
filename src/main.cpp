@@ -38,6 +38,7 @@ int main(int argc, char* argv[])
     if (!program.has_value())
     {
         std::cerr << "Program could not be parsed." << std::endl;
+        exit(EXIT_FAILURE);
     }
 
     Generator assemblyGenerator{program.value()};
