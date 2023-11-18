@@ -21,7 +21,7 @@ struct NodeTermIdentifier
 
 struct NodeTerm
 {
-    std::variant<NodeTermIntLiteral /*, NodeTermIdentifier*/> var;
+    std::variant<NodeTermIntLiteral , NodeTermIdentifier> var;
 };
 
 struct NodeExpression
@@ -34,9 +34,15 @@ struct NodeStatementKill
     NodeExpression expression;
 };
 
+struct NodeStatementAssign
+{
+    Token identifier;
+    NodeExpression expression;
+};
+
 struct NodeStatement
 {
-    std::variant<NodeStatementKill> var;
+    std::variant<NodeStatementKill, NodeStatementAssign> var;
 };
 
 struct NodeProgram

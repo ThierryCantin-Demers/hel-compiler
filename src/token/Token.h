@@ -13,7 +13,10 @@ enum class TokenType
 {
     kill,
     int_lit,
-    endl
+    endl,
+    variable,
+    ident,
+    assign
 };
 
 struct Token

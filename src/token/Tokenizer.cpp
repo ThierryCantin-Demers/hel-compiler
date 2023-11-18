@@ -48,11 +48,26 @@ std::vector<Token> Tokenizer::tokenize()
             if (out == "kill")
             {
                 tokens.emplace_back(TokenType::kill);
+                buffer.clear();
+            }
+            else if(out == "thing")
+            {
+                tokens.emplace_back(TokenType::variable);
+                buffer.clear();
+            }
+            else
+            {
+                tokens.emplace_back(TokenType::ident, buffer.str());
+                buffer.clear();
             }
         }
-        else if (c == ';')
+        else if (c == '^')
         {
             tokens.emplace_back(TokenType::endl);
+        }
+        else if (c == '=')
+        {
+            tokens.emplace_back(TokenType::assign);
         }
         else if (std::isspace(c))
         {

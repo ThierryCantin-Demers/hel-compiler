@@ -21,37 +21,78 @@ std::optional<NodeTerm> Parser::parseTerm()
 
         return term;
     }
+    else if (peek().has_value() && peek().value().type == TokenType::ident)
+    {
+        Token ident = consume();
+        NodeTerm term = NodeTerm({.var = NodeTermIdentifier{.identifier = ident}});
+
+        return term;
+    }
 
     return std::nullopt;
 }
 
 std::optional<NodeExpression> Parser::parseExpression()
 {
-    std::optional<NodeTerm> termLHS = parseTerm();
-    if (!termLHS.has_value())
+    std::optional<NodeTerm> term = parseTerm();
+    if (term.has_value())
     {
-        return std::nullopt;
+        return NodeExpression{.var = term.value()};
     }
-
-    return NodeExpression{.var = termLHS.value()};
 
     return std::nullopt;
 }
 
 std::optional<NodeStatement> Parser::parseStatement()
 {
-    if (peek().value().type == TokenType::kill && peek(1).has_value() && peek(1).value().type == TokenType::int_lit &&
-        peek(2).has_value() && peek(2).value().type == TokenType::endl)
+    if (peek().has_value() && peek().value().type == TokenType::kill)
     {
+        // kill
         consume();
 
         if (std::optional<NodeExpression> exp = parseExpression())
         {
             NodeStatementKill statementKill = NodeStatementKill({.expression = exp.value()});
             NodeStatement statement = NodeStatement({.var = statementKill});
+
+            // ^
             consume();
 
             return statement;
+        }
+        else
+        {
+            std::cerr << "Invalid expression" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+    }
+    else if (peek().has_value() && peek().value().type == TokenType::variable &&
+             peek(1).has_value() && peek(1).value().type == TokenType::ident &&
+             peek(2).has_value() && peek(2).value().type == TokenType::assign)
+    {
+        // thing keyword
+        consume();
+
+        // identifier
+        Token identifier = consume();
+
+        // =
+        consume();
+
+        if (auto expr = parseExpression())
+        {
+            NodeStatementAssign statementAssign = NodeStatementAssign({.identifier = identifier, .expression= expr.value()});
+            NodeStatement statement = NodeStatement({.var=statementAssign});
+
+            // ^
+            consume();
+
+            return statement;
+        }
+        else
+        {
+            std::cerr << "Invalid expression" << std::endl;
+            exit(EXIT_FAILURE);
         }
     }
 

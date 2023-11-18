@@ -19,7 +19,17 @@ public:
     std::string generateProgram();
 
 private:
+    void pop(const std::string& reg_);
+    void push(const std::string& reg_);
+
+    struct Variable{
+        std::string name;
+        size_t stackLocation;
+    };
+
     NodeProgram m_program;
     std::stringstream m_output;
-    void generateStatement();
+
+    std::vector<Variable> m_variables;
+    size_t m_stackSize;
 };
